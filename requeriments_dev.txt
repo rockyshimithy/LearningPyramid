@@ -1,4 +1,5 @@
 -r requeriments.txt
+pytest==2.9.2
 flake8
 ipython
 ipdb
