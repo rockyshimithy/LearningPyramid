@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Pyramid API Quote</title>
+    </head>
+    <body>
+
+        <h1>Desafio Web 1.0</h1>
+
+        {% if index %}
+        quote_number: {{ index }}
+        <br/>
+        {% endif%}
+
+        {% for quote in quotes %}
+        <li> {{ quote }} </li>
+        {% endfor %}
+
+    </body>
+</html>

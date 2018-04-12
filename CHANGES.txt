@@ -1,0 +1,6 @@
+LearningPyramid (0.0.1) unstable;
+
+    - Initial version.
+    - Added views, routes and template.
+
+ -- Rocky Shimithy <shimithy@gmail.com>  Thu, 12 Apr 2018 20:50:42 -0300

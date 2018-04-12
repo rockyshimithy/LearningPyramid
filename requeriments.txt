@@ -1,2 +1,5 @@
 pyramid==1.9.1
+cookiecutter==1.6.0
+Jinja2>=2.5.0
+waitress==1.1.0
 requests==2.10.0
