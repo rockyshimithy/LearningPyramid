@@ -6,9 +6,10 @@ import random
 from backends.api_quote import get_quotes, get_quote
 
 from pyramid.view import view_config, view_defaults
+from pyramid.response import Response
 
 
-@view_defaults(renderer='templates/quote.jinja2', route_name='index')
+@view_defaults(renderer='templates/quote.jinja2')
 class QuoteViews:
     def __init__(self, request):
         self.request = request
@@ -36,3 +37,9 @@ class QuoteViews:
         quote.append(random.choice(quotes['quotes']))
         index = quotes['quotes'].index(quote[0])
         return {'quotes': quote, 'index': index}
+
+
+@view_config(route_name='sessions')
+def sessions(request):
+    import ipdb; ipdb.set_trace()
+    return Response('Sessions')
