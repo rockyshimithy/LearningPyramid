@@ -32,7 +32,22 @@ Antes de começar, é necessário a criação e ativação de uma VirtualEnv com
 
 ### Testando a aplicação
 
-...
+Utilize um browser e faça requisições GET nos seguintes endpoints:
+
+* http://localhost:6543/
+    * O retorno sera apenas um conteudo contendo "Desafio Web 1.0".
+    
+* http://localhost:6543/quotes
+    * O retorno sera as citações do Zen do Python.
+    
+* http://localhost:6543/quotes/{quote_id}
+    * O retorno sera uma das citações do Zen do Python, dado a linha informada usando conceito de lista. 
+    
+* http://localhost:6543/quotes/random
+    * O retorno sera uma das citações do Zen do Python aleatoriamente e informando qual linha.
+    
+* http://localhost:6543/sessions
+    * O retorno sera todas as sessoes cadastradas por esse browser ou qualquer outro. Sugestao fazer requisiçoes via CURL para identificar o comportamento.
     
 
 
