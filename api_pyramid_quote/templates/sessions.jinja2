@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Pyramid API Quote</title>
+    </head>
+    <body>
+
+        <h1>Desafio Web 1.0</h1>
+
+        <table>
+            <tr>
+                <td>session id</td>
+                <td>uuid</td>
+                <td>path</td>
+                <td>datetime</td>
+            </tr>
+
+            {% for session in sessions %}
+            <tr>
+                <td>{{ session.id }}</td>
+                <td>{{ session.uuid_session }}</td>
+                <td>{{ session.route_name }}</td>
+                <td>{{ session.datetime }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </body>
+</html>

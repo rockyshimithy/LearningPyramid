@@ -14,8 +14,7 @@ VERSION_RE = re.compile(r'(\d+\.\d+\.\d+)')
 
 with open('CHANGES.txt') as changelog:
     CHANGES = changelog.read()
-    first_line = changelog.readline()
-    match = VERSION_RE.search(first_line)
+    match = VERSION_RE.search(CHANGES)
     if not match:
         raise RuntimeError('Could not determine a valid version from changelog.')
 
@@ -27,6 +26,9 @@ requires = [
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'waitress',
+    'sqlalchemy',
+    'pyramid_tm',
+    'zope.sqlalchemy'
 ]
 
 tests_require = [
@@ -59,6 +61,9 @@ setup(
         'paste.app_factory': [
             'main = api_pyramid_quote:main',
         ],
+        'console_scripts': [
+            'initializedb = api_pyramid_quote.initializedb:main',
+        ]
     },
 
 )

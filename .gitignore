@@ -2,7 +2,7 @@
 .idea/
 
 .cache
-db.sqlite3
+*.sqlite
 *.egg
 *.egg-info
 *.pyc
