@@ -8,34 +8,23 @@ from backends.api_quote import get_quotes, get_quote
 from api_pyramid_quote.models import DBSession, Session
 
 from pyramid.view import view_config, view_defaults
+from pyramid.response import Response
 
 
 @view_defaults(renderer='templates/quote.jinja2')
 class QuoteViews:
     def __init__(self, request):
         self.request = request
-        self.session = request.session
+        self.session = verify_uuid_session(request.session)
 
     @view_config(route_name='index')
     def index(self):
-
-        # TODO : CREATE DECORATOR OR FUNCTION
-        if 'uuid' not in self.session:
-            self.session['uuid'] = uuid.uuid4().hex
-
-        session = Session(uuid_session=self.session['uuid'], route_name=self.request.route_path('index'))
-        DBSession.add(session)
-
+        add_session(self.session['uuid'], self.request.route_path('index'))
         return {}
 
     @view_config(route_name='quotes')
     def quotes(self):
-
-        if 'uuid' not in self.session:
-            self.session['uuid'] = uuid.uuid4().hex
-
-        session = Session(uuid_session=self.session['uuid'], route_name=self.request.route_path('quotes'))
-        DBSession.add(session)
+        add_session(self.session['uuid'], self.request.route_path('quotes'))
 
         quotes = get_quotes()
         return {'quotes': quotes['quotes']}
@@ -43,26 +32,19 @@ class QuoteViews:
     @view_config(route_name='quote')
     def quote(self):
         quote_id = self.request.matchdict['quote_id']
-
-        if 'uuid' not in self.session:
-            self.session['uuid'] = uuid.uuid4().hex
-
-        session = Session(uuid_session=self.session['uuid'],
-                          route_name=self.request.route_path('quote', quote_id=quote_id))
-        DBSession.add(session)
+        add_session(self.session['uuid'], self.request.route_path('quote', quote_id=quote_id))
 
         quote = []
-        quote.append(get_quote(quote_id))
+        try:
+            quote.append(get_quote(quote_id))
+        except KeyError:
+            return Response('Quote {} not Found.'.format(quote_id))
+
         return {'quotes': quote}
 
     @view_config(route_name='random_quote')
     def random_quote(self):
-
-        if 'uuid' not in self.session:
-            self.session['uuid'] = uuid.uuid4().hex
-
-        session = Session(uuid_session=self.session['uuid'], route_name=self.request.route_path('random_quote'))
-        DBSession.add(session)
+        add_session(self.session['uuid'], self.request.route_path('random_quote'))
 
         quote = []
         quotes = get_quotes()
@@ -72,14 +54,24 @@ class QuoteViews:
 
 
 @view_config(route_name='sessions', renderer='templates/sessions.jinja2')
-def sessions(request):
+def view_sessions(request):
     session = request.session
-    if 'uuid' not in session:
-        session['uuid'] = uuid.uuid4().hex
+    session = verify_uuid_session(session)
 
-    session = Session(uuid_session=session['uuid'], route_name=request.route_path('sessions'))
-    DBSession.add(session)
+    add_session(session['uuid'], request.route_path('sessions'))
 
     sessions = DBSession.query(Session).all()
 
     return {'sessions': sessions}
+
+
+def verify_uuid_session(session):
+    if 'uuid' not in session:
+        session['uuid'] = uuid.uuid4().hex
+
+    return session
+
+
+def add_session(uuid_session, route_name):
+    session = Session(uuid_session=uuid_session, route_name=route_name)
+    DBSession.add(session)
